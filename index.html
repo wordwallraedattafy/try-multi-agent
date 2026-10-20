@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Words - تعلم الإنجليزية للأطفال</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#4f46e5">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
+<style>
+:root{
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --ink: #1e293b;
+  --mut: #64748b;
+  --pri: #4f46e5;
+  --pri-hover: #4338ca;
+  --acc: #f59e0b;
+  --bd: #e2e8f0;
+  --bad: #ef4444;
+  --ok: #22c55e;
+}
+
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg: #0f172a;
+    --card: #1e293b;
+    --ink: #f8fafc;
+    --mut: #94a3b8;
+    --bd: #334155;
+  }
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Fredoka",system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent;}
+
+button{font:inherit;cursor:pointer;border:0;border-radius:16px;padding:12px 20px;font-weight:600;color:#fff;background:var(--pri);transition:all .2s ease;box-shadow:0 4px 12px rgba(79,70,229,0.25)}
+button:hover{transform:translateY(-2px);background:var(--pri-hover);box-shadow:0 6px 16px rgba(79,70,229,0.35)}
+button:active{transform:translateY(0)}
+button:disabled{opacity:.6;cursor:default;transform:none!important}
+
+#setup{min-height:100vh;padding:24px;max-width:1100px;margin:auto;display:flex;flex-direction:column;gap:16px}
+header{text-align:center;margin-bottom:10px}
+h1{margin:0 0 8px;font-size:clamp(26px, 4vw, 36px);background:linear-gradient(135deg, #4f46e5, #ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+p.h{color:var(--mut);margin:0;font-size:16px}
+
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;align-items:center}
+.auto{background:var(--acc);box-shadow:0 4px 12px rgba(245,158,11,0.25)}
+.auto:hover{background:#d97706}
+.clr{background:var(--mut);box-shadow:none}
+.go{background:#16a34a;font-size:18px;padding:14px 32px;box-shadow:0 4px 12px rgba(22,163,74,0.3)}
+.go:hover{background:#15803d}
+
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;flex:1}
+.cell{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--bd);border-radius:16px;padding:8px 12px;box-shadow:0 2px 8px rgba(0,0,0,0.02);transition:border-color .2s}
+.cell:focus-within{border-color:var(--pri);box-shadow:0 0 0 3px rgba(79,70,229,0.15)}
+.cell b{color:var(--mut);font-size:13px;min-width:20px}
+.cell input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);font-size:17px;direction:ltr;font-weight:600}
+.cell span{font-size:26px;min-width:32px;text-align:center}
+
+.foot{margin-top:auto;color:var(--mut);text-align:center;font-size:14px;padding:12px 0}
+
+/* شاشة عرض البطاقات */
+#show{display:none;position:fixed;inset:0;background:radial-gradient(circle at center, #312e81 0%, #1e1b4b 100%);color:#fff;flex-direction:column;align-items:center;justify-content:center;padding:24px;z-index:50}
+#card{text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px}
+#emo{font-size:clamp(120px, 35vw, 220px);line-height:1;filter:drop-shadow(0 10px 20px rgba(0,0,0,0.3));animation:bounceIn .6s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
+#word{font-size:clamp(40px, 12vw, 72px);font-weight:700;letter-spacing:3px;text-shadow:0 4px 20px rgba(0,0,0,0.4)}
+#next{margin-top:20px;font-size:22px;padding:14px 48px;background:#fff;color:#4f46e5;box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+#next:hover{background:#f1f5f9;transform:scale(1.05)}
+#back{position:absolute;top:20px;left:20px;background:rgba(255,255,255,0.15);padding:10px 18px;border-radius:12px;backdrop-filter:blur(5px)}
+#back:hover{background:rgba(255,255,255,0.25)}
+
+@keyframes bounceIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.1);opacity:1}100%{transform:scale(1)}}
+
+/* النوافذ المنسدلة */
+.ov{position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:60}
+.modal{background:var(--card);color:var(--ink);border:1px solid var(--bd);border-radius:24px;width:min(650px, 100%);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25)}
+.mh{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--bd)}
+.mh h2{margin:0;font-size:20px}
+.x{background:transparent;color:var(--mut);padding:6px 12px;font-size:18px;box-shadow:none}
+.x:hover{background:rgba(0,0,0,0.05);color:var(--ink);transform:none}
+.mb{padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+
+.fld{background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:14px;padding:12px 16px;font:inherit;outline:none;transition:border-color .2s}
+.fld:focus{border-color:var(--pri)}
+
+.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.lcard{background:var(--bg);border:1.5px solid var(--bd);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:transform .2s}
+.lcard:hover{transform:translateY(-2px);border-color:var(--pri)}
+.lh{display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:17px}
+.lact{display:flex;gap:8px}
+
+/* الألعاب والتصميم العام للأزرار الخاصة */
+.game{background:linear-gradient(135deg, #db2777, #9333ea)}
+.print-btn{background:linear-gradient(135deg, #0284c7, #2563eb)}
+.scramble-btn{background:linear-gradient(135deg, #d97706, #b45309)}
+
+/* شاشات الألعاب التفاعلية */
+.gm{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;gap:16px;color:#fff;font-family:"Fredoka",sans-serif;background:radial-gradient(circle at center, #312e81 0%, #0f172a 100%);padding:24px;overflow:auto;direction:rtl}
+.gpane{width:min(680px,100%);margin:auto;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.glass{background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:28px;padding:32px;box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.gopt{background:#fff;color:#1e293b;border-radius:20px;padding:18px;font:700 24px/1.1 "Fredoka",sans-serif;cursor:pointer;width:100%;box-shadow:0 6px 0 #cbd5e1;border:0;transition:all .1s}
+.gopt:hover{transform:translateY(-2px);box-shadow:0 8px 0 #94a3b8;background:#f8fafc}
+.gopt:active{transform:translateY(4px);box-shadow:0 2px 0 #94a3b8}
+
+@media print {
+  body * { visibility: hidden; }
+  #printArea, #printArea * { visibility: visible; }
+  #printArea { position: absolute; inset: 0; padding: 30px; direction: ltr; background: #fff; color: #000; }
+}
+</style>
+</head>
+<body>
+<div id="setup">
+  <header>
+    <h1>📚 كلمات إنجليزية للأطفال</h1>
+    <p class="h">منصة تعليمية متكاملة لتعلم الكلمات، النطق، والتهجئة بطريقة ممتعة وتفاعلية</p>
+  </header>
+  
+  <div class="bar">
+    <button class="auto" id="auto">✨ تعبئة تلقائية</button>
+    <select class="fld" id="autoSrc" style="max-width:200px;padding:10px"><option value="dict">من القاموس الأساسي</option><option value="all">القاموس + دروسي</option></select>
+    <button class="add" id="addBtn">➕ إضافة كلمات</button>
+    <button class="lib" id="libBtn">📚 الدروس</button>
+    <button class="game" id="gameBtn">🎮 لعبة الصناديق</button>
+    <button class="scramble-btn" id="scrambleBtn">🔤 لعبة ترتيب الحروف</button>
+    <button class="print-btn" id="printBtn">🖨️ طباعة ورقة العمل</button>
+    <button class="clr" id="clr">مسح الكل</button>
+  </div>
+  
+  <p class="msg" id="setMsg" style="font-weight:600;min-height:1.5em;color:var(--pri)"></p>
+  <div id="grid"></div>
+  
+  <div class="bar" style="justify-content:center;margin-top:16px">
+    <button class="go" id="go">بدء عرض البطاقات الصوتية Flashcards ▶</button>
+  </div>
+  <div class="foot">تطوير وتصميم الأنشطة التعليمية التفاعلية · جميع الحقوق محفوظة</div>
+</div>
+
+<!-- عرض البطاقات -->
+<div id="show">
+  <button id="back">✕ خروج</button>
+  <div id="card">
+    <div id="emo"></div>
+    <div id="word"></div>
+  </div>
+  <button id="next">التالي ➜</button>
+</div>
+
+<!-- لعبة الصناديق -->
+<div class="gm" id="game" hidden>
+  <div class="gpane glass" id="gStart">
+    <h2 style="font-size:32px;margin:0">🎮 لعبة الصناديق السحرية</h2>
+    <p style="font-size:18px;opacity:0.8">اختر صندوقاً، اكتشف الصورة، واختبر مهاراتك الإنجليزية!</p>
+    <button class="go" id="gGo" style="width:100%;margin-top:10px">ابدأ التحدي ▶</button>
+    <button class="ghost" id="gQuit" style="background:rgba(255,255,255,0.15);width:100%">العودة للقائمة</button>
+  </div>
+  <div class="gpane" id="gBoard" hidden>
+    <p style="font-size:24px;font-weight:600">اختر صندوقاً لتكشف الكلمة والصورة 🎁</p>
+    <div id="gBoxes" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%"></div>
+  </div>
+  <div class="gpane glass" id="gQ" hidden>
+    <div id="gPic" style="font-size:110px;margin-bottom:10px"></div>
+    <p style="font-size:26px;font-weight:600">ما المعنى الصحيح لهذه الصورة بالإنجليزية؟</p>
+    <div id="gOpts" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;margin-top:10px"></div>
+  </div>
+  <div class="gpane glass" id="gEnd" hidden>
+    <div style="font-size:90px">🏆</div>
+    <h2 id="gMsg" style="font-size:32px;margin:10px 0">أحسنت العمل!</h2>
+    <div id="gSum" style="font-size:24px;font-weight:600;margin-bottom:15px"></div>
+    <button class="go" id="gAgain">العب مرة أخرى 🔄</button>
+  </div>
+</div>
+
+<!-- لعبة ترتيب الحروف -->
+<div class="gm" id="scrambleGame" hidden>
+  <div class="gpane glass">
+    <h2 style="font-size:30px;margin:0">🔤 تحدي ترتيب الحروف</h2>
+    <div id="scramblePic" style="font-size:100px;margin:10px 0"></div>
+    <p style="font-size:18px">رتب الحروف المبعثرة لتكتب الكلمة الصحيحة:</p>
+    <div id="scrambleLetters" style="display:flex;gap:12px;justify-content:center;margin:15px 0;flex-wrap:wrap"></div>
+    <div id="scrambleAnswer" style="font-size:36px;font-weight:700;letter-spacing:6px;min-height:55px;background:rgba(255,255,255,0.15);border-radius:16px;display:flex;align-items:center;justify-content:center;direction:ltr;width:100%;border:1px dashed rgba(255,255,255,0.3)"></div>
+    <div style="display:flex;gap:12px;width:100%;margin-top:15px">
+      <button class="go" id="scrambleCheck" style="flex:1">تحقق من الإجابة ✓</button>
+      <button class="ghost" id="scrambleQuit" style="background:rgba(255,255,255,0.15);padding:14px 24px">خروج</button>
+    </div>
+    <p id="scrambleMsg" style="font-size:20px;font-weight:600;min-height:1.5em;margin:10px 0 0"></p>
+  </div>
+</div>
+
+<!-- نافذة إدارة الدروس -->
+<div class="ov" id="ov3" hidden>
+  <div class="modal">
+    <div class="mh"><h2>📚 إدارة ومكتبة الدروس</h2><button class="x" id="ov3x">✕</button></div>
+    <div class="mb">
+      <div style="background:var(--bg);padding:16px;border-radius:18px;border:1px solid var(--bd)">
+        <h3 style="margin:0 0 10px;font-size:16px">حفظ الكلمات الحالية في المربعات كدرس جديد</h3>
+        <div style="display:flex;gap:10px">
+          <input type="text" class="fld" id="lsTitle" maxlength="60" placeholder="اكتب عنوان الدرس هنا (مثل: الحيوانات البرية)" style="flex:1">
+          <button id="lsSave">حفظ الدرس</button>
+        </div>
+      </div>
+      <h3 style="margin:10px 0 0">دروسي المحفوظة</h3>
+      <div class="lessons" id="lsMine"></div>
+      <h3 style="margin:10px 0 0">الدروس التعليمية الجاهزة</h3>
+      <div class="lessons" id="lsBuilt"></div>
+    </div>
+  </div>
+</div>
+
+<!-- طباعة ورقة العمل -->
+<div id="printArea" hidden>
+  <h2 style="text-align:center;margin-bottom:25px;font-family:sans-serif;">English Learning Worksheet - ورقة عمل تفاعلية</h2>
+  <div id="printGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;"></div>
+</div>
+
+<script>
+const RAW="apple=🍎,banana=🍌,orange=🍊,grape=🍇,watermelon=🍉,strawberry=🍓,lemon=🍋,pineapple=🍍,cherry=🍒,carrot=🥕,tomato=🍅,bread=🍞,cheese=🧀,egg=🥚,milk=🥛,pizza=🍕,burger=🍔,cat=🐱,dog=🐶,lion=🦁,monkey=🐵,rabbit=🐰,fish=🐟,bird=🐦,sun=☀️,moon=🌙,star=⭐,car=🚗,bus=🚌,plane=✈️,book=📚,pen=🖊️,bag=🎒,ball=⚽,heart=❤️,smile=😊";
+const DICT={};RAW.split(",").forEach(p=>{const [w,e]=p.split("=");DICT[w]=e});
+const KEYS=Object.keys(DICT);
+const N=40;
+const $=id=>document.getElementById(id);
+const key=w=>String(w||"").toLowerCase().trim();
+const emojiOf=w=>{w=key(w);return DICT[w]||"📝"};
+
+// نظام محاكاة الأصوات والنغمات المتقدم (Audio Context Synthesizer)
+let audioCtx=null;
+function playTone(freq, duration, type="sine"){
+  try{
+    if(!audioCtx){ audioCtx=new (window.AudioContext || window.webkitAudioContext)(); }
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }catch(e){}
+}
+const SFX = {
+  click: () => playTone(600, 0.08, "triangle"),
+  success: () => { playTone(523.25, 0.15); setTimeout(()=>playTone(659.25, 0.15), 100); setTimeout(()=>playTone(783.99, 0.25), 200); },
+  error: () => { playTone(180, 0.25, "sawtooth"); setTimeout(()=>playTone(130, 0.3, "sawtooth"), 120); }
+};
+
+function speakWord(w){
+  try{
+    if('speechSynthesis' in window){
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(w);
+      u.lang='en-US';
+      u.rate=0.85;
+      window.speechSynthesis.speak(u);
+    }
+  }catch(e){}
+}
+
+const grid=$("grid"),inputs=[],prevs=[];
+for(let i=0;i<N;i++){
+  const c=document.createElement("div");c.className="cell";
+  const n=document.createElement("b");n.textContent=i+1;
+  const inp=document.createElement("input");inp.type="text";inp.placeholder="word";inp.autocomplete="off";inp.spellcheck=false;
+  const sp=document.createElement("span");
+  inp.addEventListener("input",()=>{paint(sp,inp.value);save()});
+  c.append(n,inp,sp);grid.appendChild(c);inputs.push(inp);prevs.push(sp);
+}
+function paint(el,w){el.textContent="";w=key(w);if(!w)return;el.textContent=emojiOf(w);}
+function save(){try{localStorage.setItem("ew_words",JSON.stringify(inputs.map(i=>i.value)))}catch(e){}}
+function refresh(){inputs.forEach((inp,i)=>paint(prevs[i],inp.value))}
+try{JSON.parse(localStorage.getItem("ew_words")||"[]").forEach((v,i)=>{if(inputs[i])inputs[i].value=v});refresh()}catch(e){}
+
+$("auto").onclick=()=>{
+  SFX.click();
+  const empty=inputs.filter(i=>!i.value.trim());
+  if(!empty.length)return;
+  const pool=KEYS.filter(k=>!inputs.some(i=>key(i.value)===k));
+  let n=0;
+  empty.forEach(inp=>{if(pool.length){inp.value=pool.pop();n++;}});
+  refresh();save();$("setMsg","تمت تعبئة "+n+" كلمة بنجاح ✨");
+};
+$("clr").onclick=()=>{SFX.click();inputs.forEach(i=>i.value="");refresh();save();$("setMsg","تم مسح الشاشة.");};
+
+// العرض الصوتي البطاقات
+let list=[],bag=[];
+$("go").onclick=()=>{
+  SFX.click();
+  list=[...new Set(inputs.map(i=>i.value.trim()).filter(Boolean))];
+  if(!list.length){alert("الرجاء كتابة كلمة واحدة على الأقل للبدء!");return}
+  bag=[...list];$("setup").style.display="none";$("show").style.display="flex";
+  nextCard();
+};
+function nextCard(){
+  SFX.click();
+  if(!bag.length)bag=[...list];
+  const w=bag.pop();
+  $("word").textContent=w;
+  $("emo").textContent=emojiOf(w);
+  speakWord(w);
+}
+$("next").onclick=nextCard;
+$("back").onclick=()=>{SFX.click();$("show").style.display="none";$("setup").style.display="block";};
+
+// طباعة ورقة العمل التفاعلية
+$("printBtn").onclick=()=>{
+  SFX.click();
+  const currentWords=inputs.map(i=>i.value.trim()).filter(Boolean);
+  if(!currentWords.length){alert("أضف بعض الكلمات في المربعات أولاً لطباعتها!");return}
+  const pGrid=$("printGrid");pGrid.textContent="";
+  currentWords.forEach((w,idx)=>{
+    const item=document.createElement("div");
+    item.style.cssText="border:1.5px solid #cbd5e1;padding:16px;border-radius:12px;display:flex;align-items:center;gap:20px;page-break-inside:avoid;";
+    const emo=document.createElement("div");emo.textContent=emojiOf(w);emo.style.fontSize="48px";
+    const info=document.createElement("div");
+    info.innerHTML=`<b style="font-size:16px">${idx+1}. Target Word:</b> <span style="font-size:22px;letter-spacing:1px;font-weight:bold;color:#4f46e5">${w}</span><br><span style="color:#64748b;font-size:15px;display:inline-block;margin-top:6px">Practice Writing: _______________________</span>`;
+    item.append(emo,info);
+    pGrid.appendChild(item);
+  });
+  window.print();
+};
+
+// مكتبة وحفظ الدروس
+const BUILTIN=[
+  ["fruits","الفواكه المنعشة","apple banana orange grape watermelon strawberry lemon"],
+  ["animals","حيوانات المزرعة والغابة","cat dog lion monkey rabbit fish bird"]
+].map(([id,title,ws])=>({id,title,items:ws.split(" ").map(w=>({w}))}));
+
+$("libBtn").onclick=()=>{
+  SFX.click();
+  $("ov3").hidden=false;
+  renderLessonsList();
+};
+$("ov3x").onclick=()=>{SFX.click();$("ov3").hidden=true;};
+
+function renderLessonsList(){
+  const mine=$("lsMine");mine.textContent="";
+  let custom=[];try{custom=JSON.parse(localStorage.getItem("ew_custom_lessons")||"[]")}catch(e){}
+  if(!custom.length){mine.innerHTML='<p style="color:var(--mut);font-size:14px">لا توجد دروس محفوظة حالياً.</p>';}
+  custom.forEach(l=>{
+    const d=document.createElement("div");d.className="lcard";
+    d.innerHTML=`<div class="lh"><span>📁 ${l.title}</span><span style="font-size:13px;color:var(--mut)">(${l.items.length} كلمات)</span></div><div class="lact"><button class="go" style="padding:6px 14px;font-size:14px;flex:1">تحميل الدرس</button></div>`;
+    d.querySelector("button").onclick=()=>{SFX.click();applyLesson(l);$("ov3").hidden=true;};
+    mine.appendChild(d);
+  });
+
+  const built=$("lsBuilt");built.textContent="";
+  BUILTIN.forEach(l=>{
+    const d=document.createElement("div");d.className="lcard";
+    d.innerHTML=`<div class="lh"><span>⭐ ${l.title}</span><span style="font-size:13px;color:var(--mut)">(${l.items.length} كلمات)</span></div><div class="lact"><button class="go" style="padding:6px 14px;font-size:14px;flex:1">تحميل الدرس</button></div>`;
+    d.querySelector("button").onclick=()=>{SFX.click();applyLesson(l);$("ov3").hidden=true;};
+    built.appendChild(d);
+  });
+}
+
+function applyLesson(l){
+  inputs.forEach(i=>i.value="");
+  l.items.forEach((it,i)=>{if(inputs[i])inputs[i].value=it.w;});
+  refresh();save();
+  $("setMsg","تم تحميل درس «"+l.title+"» بنجاح!");
+}
+
+$("lsSave").onclick=()=>{
+  SFX.click();
+  const t=$("lsTitle").value.trim();
+  const items=inputs.map(i=>i.value.trim()).filter(Boolean).map(w=>({w}));
+  if(!t||!items.length){alert("الرجاء كتابة عنوان الدرس وتعبئة بعض الكلمات أولاً!");return}
+  let custom=[];try{custom=JSON.parse(localStorage.getItem("ew_custom_lessons")||"[]")}catch(e){}
+  custom.push({id:Date.now().toString(),title:t,items});
+  localStorage.setItem("ew_custom_lessons",JSON.stringify(custom));
+  $("lsTitle").value="";
+  renderLessonsList();
+  alert("تم حفظ الدرس في مكتبتك بنجاح!");
+};
+
+// لعبة الصناديق التفاعلية
+const G={words:[],done:{},score:0,cur:-1};
+$("gameBtn").onclick=()=>{SFX.click();$("game").hidden=false;gShow("gStart");};
+$("gQuit").onclick=()=>{SFX.click();$("game").hidden=true;};
+const gShow=id=>["gStart","gBoard","gQ","gEnd"].forEach(p=>$(p).hidden=p!==id);$("gGo").onclick=()=>{
+  SFX.click();
+  const pool=inputs.map(i=>i.value.trim()).filter(Boolean).map(w=>({w,e:emojiOf(w)}));
+  if(!pool.length){alert("أضف بعض الكلمات في المربعات أولاً للعب!");return}
+  G.words=pool.sort(()=>Math.random()-.5).slice(0,9);G.done={};G.score=0;
+  renderBoard();gShow("gBoard");
+};
+function renderBoard(){
+  const box=$("gBoxes");box.textContent="";
+  G.words.forEach((w,i)=>{
+    const b=document.createElement("button");
+    b.style.cssText="aspect-ratio:1;font-size:36px;background:linear-gradient(135deg, #4f46e5, #6366f1);border-radius:20px;cursor:pointer;border:0;color:#fff;box-shadow:0 6px 0 #3730a3;transition:all .1s";
+    b.textContent=G.done[i]!==undefined?(G.done[i]?"✅":"❌"):"🎁";
+    b.onclick=()=>{
+      SFX.click();
+      G.cur=i;askQ(w);
+    };
+    box.appendChild(b);
+  });
+}
+function askQ(w){
+  $("gPic").textContent=w.e;
+  speakWord(w.w);
+  const opts=$("gOpts");opts.textContent="";
+  [w.w, "apple", "cat", "dog", "sun", "book"].filter(x=>x!==w.w).sort(()=>Math.random()-.5).slice(0,3).concat(w.w).sort(()=>Math.random()-.5).forEach(t=>{
+    const b=document.createElement("button");b.className="gopt";b.textContent=t;
+    b.onclick=()=>{
+      if(t===w.w){
+        SFX.success();
+        G.done[G.cur]=true;G.score+=10;
+      }else{
+        SFX.error();
+        G.done[G.cur]=false;
+      }
+      if(Object.keys(G.done).length>=G.words.length){
+        gShow("gEnd");$("gSum").textContent="النتيجة الإجمالية: "+G.score+" نقطة ⭐";
+      }else{
+        renderBoard();gShow("gBoard");
+      }
+    };
+    opts.appendChild(b);
+  });
+  gShow("gQ");
+}
+$("gAgain").onclick=()=>{SFX.click();gShow("gStart");};
+
+// لعبة ترتيب الحروف المبعثرة
+let currentScramble=null;
+$("scrambleBtn").onclick=()=>{
+  SFX.click();
+  const pool=inputs.map(i=>i.value.trim()).filter(Boolean);
+  if(!pool.length){alert("أضف بعض الكلمات في المربعات أولاً لبدء تحدي الحروف!");return}
+  $("scrambleGame").hidden=false;
+  nextScrambleWord(pool);
+};
+$("scrambleQuit").onclick=()=>{SFX.click();$("scrambleGame").hidden=true;};
+
+function nextScrambleWord(pool){
+  const w=pool[Math.floor(Math.random()*pool.length)].toLowerCase();
+  const scrambled=w.split('').sort(()=>Math.random()-.5);
+  currentScramble={word:w, current:[]};
+  $("scramblePic").textContent=emojiOf(w);
+  $("scrambleAnswer").textContent="";
+  $("scrambleMsg").textContent="";
+  
+  const lBox=$("scrambleLetters");lBox.textContent="";
+  scrambled.forEach(char=>{
+    const btn=document.createElement("button");
+    btn.textContent=char;
+    btn.style.cssText="font-size:28px;width:55px;height:55px;font-weight:700;border-radius:14px;background:#f59e0b;color:#fff;border:0;cursor:pointer;box-shadow:0 4px 0 #b45309;transition:all .1s";
+    btn.onclick=()=>{
+      SFX.click();
+      currentScramble.current.push(char);
+      btn.disabled=true;
+      btn.style.opacity="0.3";
+      btn.style.transform="scale(0.9)";
+      $("scrambleAnswer").textContent=currentScramble.current.join('');
+    };
+    lBox.appendChild(btn);
+  });
+}
+
+$("scrambleCheck").onclick=()=>{
+  if(!currentScramble)return;
+  const userAns=currentScramble.current.join('');
+  if(userAns===currentScramble.word){
+    SFX.success();
+    $("scrambleMsg.textContent","إجابة صحيحة وممتازة! 🎉");
+    $("scrambleMsg").style.color="#4ade80";
+    speakWord(currentScramble.word);
+    setTimeout(()=>{
+      const pool=inputs.map(i=>i.value.trim()).filter(Boolean);
+      nextScrambleWord(pool);
+    }, 1600);
+  }else{
+    SFX.error();
+    $("scrambleMsg").textContent="حاول مرة أخرى بشكل صحيح! ❌";
+    $("scrambleMsg").style.color="#f87171";
+  }
+};
+</script>
+</body>
+</html>
