@@ -47,12 +47,14 @@ p.h{color:var(--mut);margin:0;font-size:16px}
 #next{margin-top:20px;font-size:22px;padding:14px 48px;background:#fff;color:#4f46e5}
 #back{position:absolute;top:20px;left:20px;background:rgba(255,255,255,0.15);padding:10px 18px;border-radius:12px}
 
-/* النوافذ */
+/* النوافذ المنسدلة */
 .ov{position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:60}
-.modal{background:var(--card);color:var(--ink);border:1px solid var(--bd);border-radius:24px;width:min(650px, 100%);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
+.ov[hidden]{display:none !important;}
+.modal{background:var(--card);color:var(--ink);border:1.5px solid var(--bd);border-radius:24px;width:min(650px, 100%);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
 .mh{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--bd)}
 .mh h2{margin:0;font-size:20px}
-.x{background:transparent;color:var(--mut);padding:6px 12px;font-size:18px;box-shadow:none}
+.x{background:transparent;color:var(--mut);padding:8px 14px;font-size:20px;box-shadow:none;border-radius:10px}
+.x:hover{background:rgba(0,0,0,0.05);color:var(--ink);transform:none}
 .mb{padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
 .fld{background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:14px;padding:12px 16px;font:inherit;outline:none}
 
@@ -293,8 +295,10 @@ const BUILTIN=[
   ["animals","حيوانات المزرعة والغابة","cat dog lion monkey rabbit fish bird"]
 ].map(([id,title,ws])=>({id,title,items:ws.split(" ").map(w=>({w}))}));
 
+// إصلاح أزرار فتح وإغلاق نافذة الدروس بشكل تام
 $("libBtn").onclick=()=>{SFX.click();$("ov3").hidden=false;renderLessonsList();};
 $("ov3x").onclick=()=>{SFX.click();$("ov3").hidden=true;};
+$("ov3").onclick=(e)=>{if(e.target === $("ov3")){$("ov3").hidden=true;}};
 
 function renderLessonsList(){
   const mine=$("lsMine");mine.textContent="";
@@ -415,14 +419,4 @@ $("scrambleCheck").onclick=()=>{
     speakWord(currentScramble.word);
     setTimeout(()=>{
       const pool=inputs.map(i=>i.value.trim()).filter(Boolean);
-      nextScrambleWord(pool);
-    }, 1600);
-  }else{
-    SFX.error();
-    $("scrambleMsg").textContent="حاول مرة أخرى بشكل صحيح! ❌";
-    $("scrambleMsg").style.color="#f87171";
-  }
-};
-</script>
-</body>
-</html>
+      nextScrambleWord(
